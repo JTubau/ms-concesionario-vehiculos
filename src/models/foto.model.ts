@@ -1,7 +1,18 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Vehiculo} from './vehiculo.model';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_foto_vehiculo: {
+        name: 'fk_foto_vehiculo',
+        entity: 'Vehiculo',
+        entityKey: 'id',
+        foreignKey: 'id_vehiculo',
+      }
+    }
+  }
+})
 export class Foto extends Entity {
   @property({
     type: 'number',
