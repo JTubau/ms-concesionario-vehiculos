@@ -1,11 +1,11 @@
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, BelongsToAccessor, HasManyThroughRepositoryFactory, HasManyRepositoryFactory} from '@loopback/repository';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, HasManyRepositoryFactory, HasManyThroughRepositoryFactory, repository} from '@loopback/repository';
 import {ConcesionarioDbDataSource} from '../datasources';
-import {Vehiculo, VehiculoRelations, Marca, Categoria, CategoriaVehiculo, Foto, Proveedor} from '../models';
-import {MarcaRepository} from './marca.repository';
+import {Categoria, CategoriaVehiculo, Foto, Marca, Proveedor, Vehiculo, VehiculoRelations} from '../models';
 import {CategoriaVehiculoRepository} from './categoria-vehiculo.repository';
 import {CategoriaRepository} from './categoria.repository';
 import {FotoRepository} from './foto.repository';
+import {MarcaRepository} from './marca.repository';
 import {ProveedorRepository} from './proveedor.repository';
 
 export class VehiculoRepository extends DefaultCrudRepository<
@@ -17,9 +17,9 @@ export class VehiculoRepository extends DefaultCrudRepository<
   public readonly pertenece: BelongsToAccessor<Marca, typeof Vehiculo.prototype.id>;
 
   public readonly tiene_categoria: HasManyThroughRepositoryFactory<Categoria, typeof Categoria.prototype.id,
-          CategoriaVehiculo,
-          typeof Vehiculo.prototype.id
-        >;
+    CategoriaVehiculo,
+    typeof Vehiculo.prototype.id
+  >;
 
   public readonly fotos: HasManyRepositoryFactory<Foto, typeof Vehiculo.prototype.id>;
 
@@ -35,7 +35,7 @@ export class VehiculoRepository extends DefaultCrudRepository<
     this.registerInclusionResolver('fotos', this.fotos.inclusionResolver);
     this.tiene_categoria = this.createHasManyThroughRepositoryFactoryFor('tiene_categoria', categoriaRepositoryGetter, categoriaVehiculoRepositoryGetter,);
     this.registerInclusionResolver('tiene_categoria', this.tiene_categoria.inclusionResolver);
-    this.pertenece = this.createBelongsToAccessorFor('pertenece', marcaRepositoryGetter,);
-    this.registerInclusionResolver('pertenece', this.pertenece.inclusionResolver);
+    this.pertenece = this.createBelongsToAccessorFor('pertenece_marca', marcaRepositoryGetter,);
+    this.registerInclusionResolver('pertenece_marca', this.pertenece.inclusionResolver);
   }
 }
